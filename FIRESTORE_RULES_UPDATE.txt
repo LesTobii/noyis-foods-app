@@ -1,0 +1,28 @@
+Update your Firestore Rules with this (replace the entire match /sales/{saleId} block):
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /sales/{saleId} {
+      allow create: if request.auth != null
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.product is string
+        && request.resource.data.unit is int;
+
+      allow read: if request.auth != null
+        && (resource.data.userId == request.auth.uid
+            || request.auth.token.email in ['lestobi77@gmail.com','owner@yourbiz.com']);
+
+      allow update, delete: if request.auth != null
+        && (resource.data.userId == request.auth.uid
+            || request.auth.token.email in ['lestobi77@gmail.com','owner@yourbiz.com'])
+        && (request.method == 'delete' || (
+          request.resource.data.keys().hasOnly(['product','flavor','unit','price','total','paymentMode','date','time','createdAt','userId','userEmail'])
+          && request.resource.data.product is string
+          && request.resource.data.unit is int
+          && request.resource.data.price is number
+          && request.resource.data.total is number
+        ));
+    }
+  }
+}

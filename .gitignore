@@ -1,0 +1,28 @@
+# Environment variables - NEVER commit these
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+yarn.lock
+
+# Build
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+plan.txt
+plan_extras.txt
